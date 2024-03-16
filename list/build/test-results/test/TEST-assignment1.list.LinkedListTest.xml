@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="assignment1.list.LinkedListTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2022-09-23T03:14:25" hostname="vlan-2645-10-19-113-101.student.wireless.sydney.edu.au" time="0.047">
+  <properties/>
+  <testcase name="testAdd()" classname="assignment1.list.LinkedListTest" time="0.037"/>
+  <testcase name="testRemoveMissing()" classname="assignment1.list.LinkedListTest" time="0.003"/>
+  <testcase name="testRemove()" classname="assignment1.list.LinkedListTest" time="0.002"/>
+  <testcase name="testConstructor()" classname="assignment1.list.LinkedListTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

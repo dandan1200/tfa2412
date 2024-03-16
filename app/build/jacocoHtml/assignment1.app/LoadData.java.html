@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoadData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">assignment1.app</a> &gt; <span class="el_source">LoadData.java</span></div><h1>LoadData.java</h1><pre class="source lang-java linenums">package assignment1.app;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import javax.swing.plaf.ColorUIResource;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LoadData {
+    private String filepath;
+    private JSONObject file;
+    private List&lt;Currency&gt; currencyList;
+    private List&lt;Currency&gt; popularCurrencyList;
+    private List&lt;ExchangeRate&gt; exchangeRateList;
+
+<span class="fc" id="L23">    public LoadData(String filepath) {</span>
+<span class="fc" id="L24">        this.filepath = filepath;</span>
+
+<span class="fc" id="L26">        JSONParser jsonParser = new JSONParser();</span>
+
+<span class="fc" id="L28">        try (FileReader reader = new FileReader(filepath))</span>
+        {
+            //Read JSON file
+<span class="fc" id="L31">            Object obj = jsonParser.parse(reader);</span>
+<span class="fc" id="L32">            this.file = (JSONObject) obj;</span>
+<span class="fc" id="L33">            reader.close();</span>
+
+<span class="nc" id="L35">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L36">            e.printStackTrace();</span>
+<span class="nc" id="L37">        } catch (IOException e) {</span>
+<span class="nc" id="L38">            e.printStackTrace();</span>
+<span class="nc" id="L39">        } catch (ParseException e) {</span>
+<span class="nc" id="L40">            e.printStackTrace();</span>
+<span class="pc" id="L41">        }</span>
+
+
+<span class="fc" id="L44">        List&lt;Currency&gt; currencyList = new ArrayList&lt;Currency&gt;();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (int i = 0; i &lt; ((JSONArray) this.file.get(&quot;currencies&quot;)).size(); i++) {</span>
+<span class="fc" id="L46">            currencyList.add(new Currency((String)((JSONArray) this.file.get(&quot;currencies&quot;)).get(i)));</span>
+        }
+<span class="fc" id="L48">        this.currencyList = currencyList;</span>
+
+<span class="fc" id="L50">        List&lt;Currency&gt; popularCurrencyList = new ArrayList&lt;Currency&gt;();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (int i = 0; i &lt; ((JSONArray) this.file.get(&quot;popularCurrencies&quot;)).size(); i++) {</span>
+<span class="fc" id="L52">            popularCurrencyList.add(Currency.getObject(((String)((JSONArray) this.file.get(&quot;popularCurrencies&quot;)).get(i)), this.currencyList));</span>
+        }
+<span class="fc" id="L54">        this.popularCurrencyList = popularCurrencyList;</span>
+
+<span class="fc" id="L56">        List&lt;ExchangeRate&gt; exchangeRateList = new ArrayList&lt;ExchangeRate&gt;();</span>
+
+<span class="fc" id="L58">        JSONArray jsonExchangeRates = (JSONArray) this.file.get(&quot;exchangeRates&quot;);</span>
+
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (int i = 0; i &lt; jsonExchangeRates.size(); i++) {</span>
+<span class="fc" id="L61">            JSONArray rates = (JSONArray) ((JSONObject) jsonExchangeRates.get(i)).get(&quot;Rates&quot;);</span>
+<span class="fc" id="L62">            double currentRate = Double.parseDouble(((String) rates.get(0)).split(&quot;,&quot;)[1]);</span>
+<span class="fc" id="L63">            rateUp isUp = rateUp.NOCHANGE;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (rates.size() &gt; 1) {</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">                if (currentRate &gt; Double.parseDouble(((String) rates.get(1)).split(&quot;,&quot;)[1])) {</span>
+<span class="fc" id="L66">                    isUp = rateUp.UP;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                } else if (currentRate &lt; Double.parseDouble(((String) rates.get(1)).split(&quot;,&quot;)[1]))  {</span>
+<span class="nc" id="L68">                    isUp = rateUp.DOWN;</span>
+                }
+            }
+
+
+<span class="fc" id="L73">            exchangeRateList.add(</span>
+                    new ExchangeRate(
+<span class="fc" id="L75">                        Currency.getObject((String) (((JSONObject) jsonExchangeRates.get(i)).get(&quot;cur1&quot;)), currencyList),</span>
+<span class="fc" id="L76">                        Currency.getObject((String) (((JSONObject) jsonExchangeRates.get(i)).get(&quot;cur2&quot;)), currencyList),</span>
+                        currentRate,
+                        isUp
+                        )
+                    );
+
+        }
+<span class="fc" id="L83">        this.exchangeRateList = exchangeRateList;</span>
+
+<span class="fc" id="L85">    }</span>
+
+    public List&lt;Currency&gt; getCurrencies(){
+<span class="fc" id="L88">        return this.currencyList;</span>
+    }
+    public List&lt;Currency&gt; getPopularCurrencies() {
+<span class="fc" id="L91">        return this.popularCurrencyList;</span>
+    }
+    public List&lt;ExchangeRate&gt; getExchangeRates() {
+<span class="fc" id="L94">        return this.exchangeRateList;</span>
+    }
+    private boolean saveConfigToFile(){
+        try {
+<span class="fc" id="L98">            FileWriter fw = new FileWriter(this.filepath);</span>
+<span class="fc" id="L99">            fw.write(this.file.toJSONString());</span>
+<span class="fc" id="L100">            fw.close();</span>
+<span class="fc" id="L101">            return true;</span>
+<span class="nc" id="L102">        }  catch (FileNotFoundException e) {</span>
+<span class="nc" id="L103">            e.printStackTrace();</span>
+<span class="nc" id="L104">        } catch (IOException e) {</span>
+<span class="nc" id="L105">            e.printStackTrace();</span>
+<span class="nc" id="L106">        }</span>
+<span class="nc" id="L107">        return false;</span>
+    }
+    public boolean saveNewCurrency(Currency c) {
+<span class="fc" id="L110">        ((JSONArray) file.get(&quot;currencies&quot;)).add(c.getTicker());</span>
+<span class="fc" id="L111">        this.currencyList.add(c);</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (saveConfigToFile()) {</span>
+<span class="fc" id="L113">            return true;</span>
+        } else {
+<span class="nc" id="L115">            return false;</span>
+        }
+        
+    }
+    public boolean saveNewExchangeRate(ExchangeRate newExchangeRate) {
+<span class="fc" id="L120">        JSONObject newJSONER = new JSONObject();</span>
+<span class="fc" id="L121">        newJSONER.put(&quot;cur1&quot;, newExchangeRate.currency1.getTicker());</span>
+<span class="fc" id="L122">        newJSONER.put(&quot;cur2&quot;, newExchangeRate.currency2.getTicker());</span>
+<span class="fc" id="L123">        JSONArray newRateArray = new JSONArray();</span>
+<span class="fc" id="L124">        newRateArray.add(java.time.LocalDateTime.now()+&quot;,&quot;+Double.toString(newExchangeRate.getRate(newExchangeRate.currency1,newExchangeRate.currency2)));</span>
+<span class="fc" id="L125">        newJSONER.put(&quot;Rates&quot;,newRateArray);</span>
+
+<span class="fc" id="L127">        ((JSONArray) file.get(&quot;exchangeRates&quot;)).add(newJSONER);</span>
+<span class="fc" id="L128">        this.exchangeRateList.add(newExchangeRate);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (saveConfigToFile()) {</span>
+<span class="fc" id="L130">            return true;</span>
+        } else {
+<span class="nc" id="L132">            return false;</span>
+        }
+
+    }
+ }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

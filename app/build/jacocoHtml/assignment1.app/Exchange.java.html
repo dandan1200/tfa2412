@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Exchange.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">assignment1.app</a> &gt; <span class="el_source">Exchange.java</span></div><h1>Exchange.java</h1><pre class="source lang-java linenums">package assignment1.app;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class Exchange {
+<span class="fc" id="L9">    private final String filePath = &quot;src/main/resources/loadConfig.json&quot;;</span>
+    public List&lt;Currency&gt; currencyList;
+    public List&lt;Currency&gt; popularCurrencyList;
+    public List&lt;ExchangeRate&gt; exchangeRateList;
+
+    public CurrencyReport CR;
+
+    private LoadData configData;
+
+<span class="fc" id="L18">    public Exchange(){</span>
+<span class="fc" id="L19">        LoadData FxObject = new LoadData(filePath);</span>
+<span class="fc" id="L20">        this.configData = FxObject;</span>
+<span class="fc" id="L21">        currencyList = FxObject.getCurrencies();</span>
+<span class="fc" id="L22">        popularCurrencyList = FxObject.getPopularCurrencies();</span>
+<span class="fc" id="L23">        exchangeRateList = FxObject.getExchangeRates();</span>
+        
+<span class="fc" id="L25">    }</span>
+
+    public String getFilePath() {
+<span class="nc" id="L28">        return filePath;</span>
+    }
+
+    public List&lt;Currency&gt; getCurrencyList() {
+<span class="fc" id="L32">        return currencyList;</span>
+    }
+
+    public List&lt;Currency&gt; getPopularCurrencyList() {
+<span class="nc" id="L36">        return popularCurrencyList;</span>
+    }
+
+    public List&lt;ExchangeRate&gt; getExchangeRateList() {
+<span class="nc" id="L40">        return exchangeRateList;</span>
+    }
+
+    public void curReport(Currency c1, Currency c2, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+<span class="fc" id="L44">        this.CR = new CurrencyReport(filePath,c1,c2,startDateTime,endDateTime);</span>
+<span class="fc" id="L45">    }</span>
+
+    public void addCurrency(String ticker) {
+<span class="nc" id="L48">        Scanner s = new Scanner(System.in);</span>
+<span class="nc" id="L49">        String input = s.nextLine();</span>
+
+<span class="nc" id="L51">        Currency newCurrency = new Currency(ticker);</span>
+<span class="nc" id="L52">        this.currencyList.add(newCurrency);</span>
+<span class="nc" id="L53">        this.configData.saveNewCurrency(newCurrency);</span>
+
+        //loop through currencies and get exchange rates for each one and create exchange rate object
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        for (Currency c: this.currencyList) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (c.getTicker() != newCurrency.getTicker()) {</span>
+<span class="nc" id="L58">                System.out.println(&quot;Enter exchange rate for &quot; + newCurrency.getTicker() + &quot;/&quot; + c.getTicker());</span>
+<span class="nc" id="L59">                double rate = 0;</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">                while (rate == 0) {</span>
+<span class="nc" id="L61">                    input = s.nextLine();</span>
+                    try{
+<span class="nc" id="L63">                        rate = Double.parseDouble(input);</span>
+<span class="nc" id="L64">                    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L65">                        rate = 0;</span>
+<span class="nc" id="L66">                        System.out.println(&quot;Invalid rate input.&quot;);</span>
+<span class="nc" id="L67">                        System.out.println(&quot;Enter exchange rate for &quot; + newCurrency.getTicker() + &quot;/&quot; + c.getTicker());</span>
+<span class="nc" id="L68">                    }</span>
+
+                }
+<span class="nc" id="L71">                ExchangeRate newPair = new ExchangeRate(newCurrency, c, rate, rateUp.NOCHANGE);</span>
+
+                //Save to file
+<span class="nc" id="L74">                this.configData.saveNewExchangeRate(newPair);</span>
+
+            }
+<span class="nc" id="L77">        }</span>
+<span class="nc" id="L78">        s.close();</span>
+
+<span class="nc" id="L80">    }</span>
+
+    public boolean editExchangeRate(String inputc1, String inputc2, double newRate){
+        // Takes Currency object and returns current rate and input new rate and save changes to file
+        // System.out.println(&quot;Enter Base Currency: &quot;);
+        // Scanner rateScanner = new Scanner(System.in);
+        // String inputc1 = rateScanner.nextLine();
+        // System.out.println(&quot;Enter Second Currency: &quot;);
+        // String inputc2 = rateScanner.nextLine();
+
+<span class="fc" id="L90">        Currency c1 = Currency.getObject(inputc1, currencyList);</span>
+<span class="fc" id="L91">        Currency c2 = Currency.getObject(inputc2, currencyList);</span>
+
+<span class="fc" id="L93">        double rateFound = 0;</span>
+<span class="fc" id="L94">        Boolean valid = false;</span>
+
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        for (ExchangeRate findRate : exchangeRateList){</span>
+<span class="fc bfc" id="L97" title="All 4 branches covered.">            if((findRate.currency1 == c1) &amp;&amp; (findRate.currency2 == c2)){</span>
+<span class="fc" id="L98">                rateFound = findRate.getRate(c1, c2);</span>
+            }
+<span class="pc bpc" id="L100" title="1 of 4 branches missed.">            else if((findRate.currency1 == c2) &amp;&amp; (findRate.currency2 == c1)){</span>
+<span class="nc" id="L101">                rateFound = findRate.getRate(c1, c2);</span>
+            }
+            else{
+<span class="fc" id="L104">                System.out.println(&quot;Exchange Rate not found!&quot;);</span>
+                
+            }
+<span class="fc" id="L107">            System.out.println(&quot;Current Exchange Rate is: &quot; + rateFound);</span>
+<span class="fc" id="L108">            System.out.println(&quot;Enter new rate: &quot;);</span>
+            // double newRate = rateScanner.nextDouble();
+
+<span class="fc" id="L111">            findRate.updateRate(newRate);</span>
+<span class="fc" id="L112">            System.out.println(&quot;Stored new exchange rate as &quot; + newRate);</span>
+<span class="fc" id="L113">            valid = true;</span>
+<span class="fc" id="L114">        }</span>
+<span class="fc" id="L115">        return valid;</span>
+        
+
+        // rateScanner.close();
+
+    }
+
+    public List&lt;Currency&gt; getPopularPairs(){
+<span class="nc" id="L123">        return this.popularCurrencyList;</span>
+    }
+
+    public boolean editPopularPairs(Currency currToAdd, Currency currToRemove){
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (Currency c: popularCurrencyList) {</span>
+<span class="fc" id="L128">            System.out.println(c.getTicker());</span>
+<span class="fc" id="L129">        }</span>
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">        if (this.currencyList.contains(currToAdd) &amp;&amp; (this.popularCurrencyList.contains(currToAdd) == false)) {</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            if (this.popularCurrencyList.contains(currToRemove)) {</span>
+<span class="fc" id="L132">                this.popularCurrencyList.remove(currToRemove);</span>
+<span class="fc" id="L133">                this.popularCurrencyList.add(currToAdd);</span>
+<span class="fc" id="L134">                return true;</span>
+<span class="nc" id="L135">            } return false;</span>
+<span class="fc" id="L136">        } return false;</span>
+    }
+
+    public double convertCurrency(Currency currencyFrom, Currency currencyTo, double amount){
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (ExchangeRate exchangeRate : exchangeRateList) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            if (exchangeRate.getRate(currencyFrom, currencyTo) &gt; 0) {</span>
+<span class="nc" id="L143">                return exchangeRate.getRate(currencyFrom, currencyTo) * amount;</span>
+            }
+<span class="nc" id="L145">        }</span>
+<span class="nc" id="L146">        return 0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

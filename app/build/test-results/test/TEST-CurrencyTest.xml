@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CurrencyTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-09-23T03:14:23" hostname="vlan-2645-10-19-113-101.student.wireless.sydney.edu.au" time="0.002">
+  <properties/>
+  <testcase name="testCurrencySearch()" classname="CurrencyTest" time="0.001"/>
+  <testcase name="testCreateCurrency1()" classname="CurrencyTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

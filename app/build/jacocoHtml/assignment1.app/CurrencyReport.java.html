@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurrencyReport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">assignment1.app</a> &gt; <span class="el_source">CurrencyReport.java</span></div><h1>CurrencyReport.java</h1><pre class="source lang-java linenums">package assignment1.app;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.Collections;
+
+public class CurrencyReport {
+
+    private String filepath;
+    private JSONObject file;
+
+<span class="fc" id="L23">    private SortedMap&lt;LocalDateTime, Double&gt; rates = new TreeMap&lt;LocalDateTime, Double&gt;(</span>
+<span class="fc" id="L24">            new Comparator&lt;LocalDateTime&gt;() {</span>
+                public int compare(LocalDateTime o1, LocalDateTime o2){
+<span class="fc" id="L26">                    return o1.compareTo(o2);</span>
+                }
+            }
+            );
+
+<span class="fc" id="L31">    public CurrencyReport(String filepath, Currency cur1, Currency cur2, LocalDateTime startDate, LocalDateTime endDate) {</span>
+<span class="fc" id="L32">        this.filepath = filepath;</span>
+
+        //Load File
+<span class="fc" id="L35">        JSONParser jsonParser = new JSONParser();</span>
+
+<span class="fc" id="L37">        try (FileReader reader = new FileReader(filepath))</span>
+        {
+            //Read JSON file
+<span class="fc" id="L40">            Object obj = jsonParser.parse(reader);</span>
+<span class="fc" id="L41">            this.file = (JSONObject) obj;</span>
+
+<span class="nc" id="L43">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L44">            e.printStackTrace();</span>
+<span class="nc" id="L45">        } catch (IOException e) {</span>
+<span class="nc" id="L46">            e.printStackTrace();</span>
+<span class="nc" id="L47">        } catch (ParseException e) {</span>
+<span class="nc" id="L48">            e.printStackTrace();</span>
+<span class="pc" id="L49">        }</span>
+
+        //Load rates
+<span class="fc" id="L52">        JSONArray jsonExchangeRates = (JSONArray) this.file.get(&quot;exchangeRates&quot;);</span>
+
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        for (int i = 0; i &lt; jsonExchangeRates.size(); i++) {</span>
+<span class="fc" id="L55">            JSONObject pair = (JSONObject) jsonExchangeRates.get(i);</span>
+<span class="pc bpc" id="L56" title="4 of 8 branches missed.">            if ((pair.get(&quot;cur1&quot;).equals(cur1.getTicker()) &amp;&amp; pair.get(&quot;cur2&quot;).equals(cur2.getTicker())) || ((pair.get(&quot;cur1&quot;).equals(cur2.getTicker()) &amp;&amp; pair.get(&quot;cur2&quot;).equals(cur1.getTicker())) )) {</span>
+<span class="fc" id="L57">                JSONArray ratesStrings = (JSONArray) pair.get(&quot;Rates&quot;);</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">                for (int j = 0; j &lt; ratesStrings.size(); j++) {</span>
+<span class="fc" id="L60">                    rates.put(LocalDateTime.parse(ratesStrings.get(j).toString().split(&quot;,&quot;)[0]),Double.parseDouble(ratesStrings.get(j).toString().split(&quot;,&quot;)[1] ));</span>
+                }
+<span class="fc" id="L62">                break;</span>
+            }
+        }
+
+<span class="fc" id="L66">        rates = rates.subMap(startDate, endDate);</span>
+
+<span class="fc" id="L68">    }</span>
+
+    public String displayRates() {
+<span class="fc" id="L71">        String out = &quot;&quot;;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (int i = 0; i &lt; rates.size(); i++) {</span>
+<span class="fc" id="L73">            out += rates.keySet().toArray()[i] + &quot;:&quot; + rates.get(rates.keySet().toArray()[i]);</span>
+<span class="fc" id="L74">            System.out.println(rates.keySet().toArray()[i] + &quot;:&quot; + rates.get(rates.keySet().toArray()[i]));</span>
+        }
+<span class="fc" id="L76">        return out;</span>
+    }
+    public double getAvg() {
+<span class="fc" id="L79">        double avg = 0;</span>
+<span class="fc" id="L80">        double sum = 0;</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (int i = 0; i &lt; rates.size(); i++) {</span>
+<span class="fc" id="L82">            sum += (Double) rates.values().toArray()[i];</span>
+        }
+<span class="fc" id="L84">        avg = (Double) sum/rates.size();</span>
+<span class="fc" id="L85">        System.out.println(&quot;Average: &quot; + avg);</span>
+<span class="fc" id="L86">        return avg;</span>
+    }
+    public double getMedian() {
+<span class="fc" id="L89">        double median = 0;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (rates.size() % 2 == 0) {</span>
+<span class="fc" id="L91">            median = ((double) (rates.values().toArray()[(rates.size()/2) - 1]) +  (double) (rates.values().toArray()[(rates.size()/2)]))/2;</span>
+        } else {
+<span class="fc" id="L93">            median = (double) rates.values().toArray()[rates.size()/2];</span>
+        }
+<span class="fc" id="L95">        System.out.println(&quot;Median: &quot; + median);</span>
+<span class="fc" id="L96">        return median;</span>
+    }
+    public double getMax() {
+<span class="fc" id="L99">        System.out.println(&quot;Max: &quot; + Collections.max(rates.values()));</span>
+<span class="fc" id="L100">        return Collections.max(rates.values());</span>
+    }
+    public double getMin() {
+<span class="fc" id="L103">        System.out.println(&quot;Min: &quot; + Collections.min(rates.values()));</span>
+<span class="fc" id="L104">        return Collections.min(rates.values());</span>
+    }
+    public double getSD() {
+<span class="fc" id="L107">        StandardDeviation sd = new StandardDeviation();</span>
+<span class="fc" id="L108">        double vals[] = new double[rates.size()];</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (int i = 0; i &lt; rates.size(); i++) {</span>
+<span class="fc" id="L110">            vals[i] = (double) rates.values().toArray()[i];</span>
+        }
+<span class="fc" id="L112">        System.out.println(&quot;Min: &quot; + sd.evaluate(vals));</span>
+<span class="fc" id="L113">        return sd.evaluate(vals);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

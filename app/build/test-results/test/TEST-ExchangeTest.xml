@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ExchangeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-09-23T03:14:23" hostname="vlan-2645-10-19-113-101.student.wireless.sydney.edu.au" time="0.021">
+  <properties/>
+  <testcase name="testCurrencyReport()" classname="ExchangeTest" time="0.005"/>
+  <testcase name="editExchangeRateTest()" classname="ExchangeTest" time="0.012"/>
+  <testcase name="popularPairsEditTest()" classname="ExchangeTest" time="0.002"/>
+  <system-out><![CDATA[Max: 0.68
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+Exchange Rate not found!
+Current Exchange Rate is: 0.68
+Enter new rate: 
+Stored new exchange rate as 0.5
+AUD
+USD
+EUR
+JPY
+AUD
+USD
+EUR
+JPY
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

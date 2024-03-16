@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CurrencyReportTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2022-09-23T03:14:23" hostname="vlan-2645-10-19-113-101.student.wireless.sydney.edu.au" time="0.144">
+  <properties/>
+  <testcase name="minReportTest()" classname="CurrencyReportTest" time="0.084"/>
+  <testcase name="avgReportTest()" classname="CurrencyReportTest" time="0.008"/>
+  <testcase name="SDReportTest()" classname="CurrencyReportTest" time="0.033"/>
+  <testcase name="displayReportTest()" classname="CurrencyReportTest" time="0.011"/>
+  <testcase name="medianReportTest2()" classname="CurrencyReportTest" time="0.002"/>
+  <testcase name="maxReportTest()" classname="CurrencyReportTest" time="0.002"/>
+  <testcase name="medianReportTest()" classname="CurrencyReportTest" time="0.001"/>
+  <system-out><![CDATA[Min: 0.64
+Average: 0.66
+Min: 0.028284271247461926
+2022-09-03T07:43:38.370364:95.53
+Median: 95.53
+Max: 0.68
+Median: 0.66
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

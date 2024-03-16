@@ -1,6 +1,4 @@
-# Exchange Program
-CC_19_Fri_12_Hunter_Group_3 - SOFT2412    
-    
+# Exchange Program   
 Dependencies:    
 [gradle](https://gradle.org/)  
 [jacoco](https://www.jacoco.org/jacoco/)  
